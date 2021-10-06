@@ -151,4 +151,11 @@ weather_df %>%
 ```
 
 
+## Embeding plots
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .3)
+```
 
