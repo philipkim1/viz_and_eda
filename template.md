@@ -159,3 +159,30 @@ weather_df %>%
     ## Warning: Removed 15 rows containing non-finite values (stat_binhex).
 
 ![](template_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+## Univariate plots
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmax, fill = name)) + 
+  geom_histogram() +
+  facet_grid(. ~ name)
+```
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_bin).
+
+![](template_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+Let’s try some other plots…
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmax, fill = name)) +
+  geom_density(alpha = .3)
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_density).
+
+![](template_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
