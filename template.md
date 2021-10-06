@@ -16,6 +16,10 @@ library(tidyverse)
     ## x dplyr::filter() masks stats::filter()
     ## x dplyr::lag()    masks stats::lag()
 
+``` r
+library(ggridges)
+```
+
 Load in a dataset that we’ll use often.
 
 ``` r
@@ -186,3 +190,41 @@ weather_df %>%
     ## Warning: Removed 3 rows containing non-finite values (stat_density).
 
 ![](template_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+Still with `tmax` and `name`
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = name, y = tmax)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_boxplot).
+
+![](template_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+Some people like violin plots???
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = name, y = tmax)) +
+  geom_violin()
+```
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_ydensity).
+
+![](template_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+What about ridges…
+
+``` r
+weather_df %>% 
+  ggplot(aes(x = tmax, y = name)) +
+  geom_density_ridges(alpha = .8, scale = .8)
+```
+
+    ## Picking joint bandwidth of 1.84
+
+    ## Warning: Removed 3 rows containing non-finite values (stat_density_ridges).
+
+![](template_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
