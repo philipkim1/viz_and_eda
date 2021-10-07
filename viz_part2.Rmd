@@ -1,10 +1,11 @@
 ---
-title: "ggplot 1"
+title: "ggplot 2"
 output: github_document
 ---
 
 ```{r}
 library(tidyverse)
+library(viridis)
 library(ggridges)
 ```
 
@@ -30,132 +31,59 @@ weather_df =
   select(name, id, everything())
 ```
 
-
-
-## Scatterplot
-
-tmax vs tmin
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) + 
-  geom_point()
-```
-
-
-you can save ggplots
-
-```{r}
-ggplot_tmax_tmin = 
-  weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) + 
-  geom_point()
-```
-
-
-## Let's fancy it up
-
-Add...color? lines? other stuff?
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax, color = name)) + 
-  geom_point(alpha = .3) +
-  geom_smooth(se = FALSE) + 
-  facet_grid(. ~ name)
-```
-
-Let's make one more scatterplot
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = date, y = tmax, size = prcp)) +
-  geom_point(alpha = .3) +
-  facet_grid(. ~ name) +
-  geom_smooth(se = FALSE)
-```
-
-
-## Use data manipulation as part of this
-
-```{r}
-weather_df %>% 
-  filter(name == "CentralPark_NY") %>% 
-  mutate(
-    tmax = tmax * (9/5) + 32,
-    tmin = tmin * (9/5) + 32
-  ) %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_point()
-```
-
-
-## Stacking geoms
-
-Which geoms do you want?
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = date, y = tmax, color = name)) +
-  geom_smooth()
-```
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmin, y = tmax)) +
-  geom_hex()
-```
-
-
-## Univariate plots
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmax, fill = name)) + 
-  geom_histogram() +
-  facet_grid(. ~ name)
-```
-
-
-Let's try some other plots...
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmax, fill = name)) +
-  geom_density(alpha = .3)
-```
-
-Still with `tmax` and `name`
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = name, y = tmax)) +
-  geom_boxplot()
-```
-
-Some people like violin plots???
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = name, y = tmax)) +
-  geom_violin()
-```
-
-
-What about ridges...
-
-```{r}
-weather_df %>% 
-  ggplot(aes(x = tmax, y = name)) +
-  geom_density_ridges(alpha = .8, scale = .8)
-```
-
-
-## Embeding plots
+## Start with a familiar one
 
 ```{r}
 weather_df %>% 
   ggplot(aes(x = tmin, y = tmax, color = name)) +
-  geom_point(alpha = .3)
+  geom_point(alpha = .3) +
+  labs(
+    title = "Temperature at three stations",
+    x = "Minimum daily temp (C)",
+    y = "Maximum daily temp (C)",
+    caption = "data from rnoaa package with three stations"
+  )
 ```
+
+## Scales
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .3) +
+  labs(
+    title = "Temperature at three stations",
+    x = "Minimum daily temp (C)",
+    y = "Maximum daily temp (C)",
+    caption = "data from rnoaa package with three stations"
+  ) +
+  scale_x_continuous(
+    breaks = c(-15, 0, 15),
+    labels = c("-15 C", "0", "15")
+  ) +
+  scale_y_continuous(
+    trans = "sqrt",
+    position = "right"
+  )
+```
+
+
+Color Scales
+
+```{r}
+weather_df %>% 
+  ggplot(aes(x = tmin, y = tmax, color = name)) +
+  geom_point(alpha = .3) +
+  labs(
+    title = "Temperature at three stations",
+    x = "Minimum daily temp (C)",
+    y = "Maximum daily temp (C)",
+    caption = "data from rnoaa package with three stations"
+  ) +
+  scale_color_hue(
+    name = "Location",
+    h = c(100, 300)) +
+  scale_color_viridis_d()
+```
+
 
